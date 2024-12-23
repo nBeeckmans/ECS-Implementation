@@ -56,16 +56,16 @@ public:
         }
     };
 
-    const Iterator& begin() const {
+    const Iterator begin() const {
         int firstIndex = 0;
-        while (firstIndex < pScene->entities.size() && (componentMask != (componentMask & pScene->entities[firstIndex].getMask()))
-            || !Entity::isValid(pScene->entities[firstIndex].getID())) {
+        while (firstIndex < pScene->entities.size() && (componentMask != (componentMask & pScene->entities[firstIndex].getMask())
+            || !Entity::isValid(pScene->entities[firstIndex].getID()))) {
             firstIndex++;
         }
         return Iterator(pScene, firstIndex, componentMask, all);
     };
 
-    const Iterator& end() const {
+    const Iterator end() const {
         return Iterator(pScene, pScene->entities.size(), componentMask, all);
     };
 
