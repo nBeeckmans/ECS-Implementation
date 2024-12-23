@@ -1,5 +1,4 @@
 #pragma once
-#include <array>
 #include <bitset>
 
 #include "Components.h"
@@ -10,6 +9,7 @@ typedef unsigned int EntityVersion;
 typedef long long unsigned int EntityID;
 
 static EntityID nextEntityID = 0;
+constexpr int MAX_ENTITIES = 32;
 
 class Entity {
 private:
@@ -17,29 +17,31 @@ private:
   ComponentMask flags;
 public:
   Entity(){ this->id = nextEntityID++; }
-  Entity(EntityID id, ComponentMask flags){}
-  EntityID getID() { return id; }
-  void setID(EntityID id) { this->id = id; }
+  Entity(const EntityID id, const ComponentMask flags)
+  : id(id), flags(flags) {}
+
+  [[nodiscard]] EntityID getID() const { return id; }
+  void setID(const EntityID id) { this->id = id; }
   void setComponent(int componentID) { this->flags.set(componentID); }
-  bool hasComponent(int componentID) { return this->flags.test(componentID); }
+  [[nodiscard]] bool hasComponent(int componentID) const { return this->flags.test(componentID); }
   void removeComponent(int componentID) { this->flags.reset(componentID); }
-  ComponentMask getMask() { return this->flags; }
+  [[nodiscard]] ComponentMask getMask() const { return this->flags; }
   void reset() { this->flags.reset(); }
 
   static inline EntityID createEntityID(EntityIndex index, EntityVersion version) {
     return (static_cast<EntityID>(index) << 32) | static_cast<EntityID>(version);
   }
 
-  static inline EntityIndex getEntityIndex(EntityID id) {
+  static inline EntityIndex getEntityIndex(const EntityID id) {
     return id >> 32;
   }
 
-  static inline EntityVersion getEntityVersion(EntityID id) {
+  static inline EntityVersion getEntityVersion(const EntityID id) {
     return id & 0xFFFFFFFF;
   }
 
-  static inline bool isValid(EntityID id) {
-    return (id >> 32) != EntityIndex(-1);
+  static inline bool isValid(const EntityID id) {
+    return (id >> 32) != static_cast<EntityIndex>(-1);
   }
 private:
 };

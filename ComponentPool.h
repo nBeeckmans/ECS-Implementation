@@ -1,7 +1,8 @@
 #pragma once
 #include <cstddef>
 
-constexpr int MAX_ENTITIES = 32;
+#include "Entity.h"
+
 typedef char byte;
 
 class ComponentPool {
@@ -20,6 +21,4 @@ public:
     inline void* get(std::size_t index) {
         return this->pPool + index * elementSize;
     }
-private:
-
 };

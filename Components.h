@@ -4,7 +4,8 @@
 namespace Components {
   constexpr int MAX_COMPONENTS = 32;
   extern int componentCount;
-  template<class T>
+
+  template<class _>
   int getID() {
     static int id = componentCount++;
     assert(id < MAX_COMPONENTS);

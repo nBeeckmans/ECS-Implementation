@@ -12,6 +12,7 @@ class Scene {
     std::vector<ComponentPool*> componentPools;
 public:
     EntityID createEntity() {
+        // to reuse entities
         if (!freeEntities.empty()) {
             EntityIndex newIndex = freeEntities.back();
             freeEntities.pop_back();
@@ -48,10 +49,10 @@ public:
     }
 
     template<typename T>
-    std::optional<T*> get(EntityID entityId) {
-        int componentID = Components::getID<T>();
+    T* get(const EntityID entityId) {
+        const int componentID = Components::getID<T>();
         if (!entities[entityId].hasComponent(componentID)) {
-            return std::nullopt;
+            return nullptr;
         }
 
         T* pComponent = static_cast<T*>(componentPools[componentID]->get(componentID));
@@ -59,17 +60,17 @@ public:
     }
 
     template <typename T>
-    void remove(EntityID entityID) {
+    void remove(const EntityID entityID) {
         if (entities[Entity::getEntityIndex(entityID)].getID() != entityID) {
             return;
         }
 
-        int componentID = Components::getID<T>();
+        const int componentID = Components::getID<T>();
         entities[Entity::getEntityIndex(entityID)].removeComponent(componentID);
     }
 
-    void DestroyEntity(EntityID entityID) {
-        EntityID newID =
+    void DestroyEntity(const EntityID entityID) {
+        const EntityID newID =
             Entity::createEntityID(
                 Entity::getEntityIndex(-1),
                     Entity::getEntityVersion(entityID)+1

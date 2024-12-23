@@ -1,20 +1,21 @@
 #include "Engine.h"
+#include "SceneView.h"
 
 #include <iostream>
 
 void Engine::init() {
-
+    // initialize window/renderer
 }
 
 void Engine::run() {
+    // Selects every entity with TransformComponent
     auto view = SceneView<Components::Transform>(*this->scenes[currentScene]);
-    auto test = view.begin();
 
+    // iterates through elements
     for (auto element : view) {
         auto component = this->scenes[currentScene]->get<Components::Transform>(element);
-        if (component.has_value()) {
-            std::cout << component.value()->x << component.value()->y << std::endl;
-        }
+        std::cout << component->x << component->y << std::endl;
+
     }
 }
 
