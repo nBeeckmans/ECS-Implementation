@@ -8,7 +8,7 @@ private:
     ComponentMask componentMask;
     bool all {false};
 public:
-    SceneView(Scene& scene) : pScene(&scene) {
+    explicit SceneView(Scene& scene) : pScene(&scene) {
         if (sizeof ... (ComponentTypes) == 0) {
             all = true;
         }
@@ -22,12 +22,12 @@ public:
     };
 
     struct Iterator {
-        Scene* pScene;
+        Scene* pScene = nullptr;
         EntityIndex index;
         ComponentMask componentMask;
         bool all {false};
         Iterator() = default;
-        Iterator(Scene* pScene, EntityIndex id, ComponentMask mask, bool all)
+        Iterator(Scene* pScene, const EntityIndex id, const ComponentMask mask, const bool all)
         : pScene(pScene), index(id), componentMask(mask), all(all) {
 
         };
@@ -43,7 +43,7 @@ public:
             return index != other.index && index != pScene->entities.size();
         }
 
-        bool validIndex() {
+        bool validIndex() const {
             return Entity::isValid(pScene->entities[index].getID()) &&
                 (all|| componentMask == (componentMask & pScene->entities[index].getMask()));
         }
