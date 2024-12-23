@@ -9,6 +9,5 @@ ADD_EXECUTABLE(example Main.cpp
         Engine.h
         Entity.h
         Scene.h
-        ComponentPool.cpp
         ComponentPool.h
 )
